@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚠️ CRITICAL SYSTEM ERROR ⚠️</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: black;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.5s ease;
+        }
+
+        /* হ্যাকিং স্ক্রিন স্টাইল */
+        #hacker-screen {
+            text-align: center;
+            width: 80%;
+        }
+
+        .warning-text {
+            color: #ff0000;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            animation: blink 0.6s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #terminal-log {
+            color: #00ff00;
+            font-size: 1rem;
+            height: 150px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .progress-box {
+            width: 100%;
+            border: 2px solid #ff0000;
+            padding: 3px;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 25px;
+            background-color: #ff0000;
+            transition: width 0.1s linear;
+        }
+
+        #percent-text {
+            color: white;
+            margin-top: 10px;
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        /* প্র্যাঙ্ক রিভিল স্ক্রিন (লুকানো থাকবে শুরুতে) */
+        #reveal-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .reveal-content h1 {
+            color: #ff4081;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .cat-img {
+            width: 350px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hacker-screen">
+        <div class="warning-text">SYSTEM HACKED!</div>
+        <div id="terminal-log"></div>
+        <div class="progress-box">
+            <div id="progress-bar"></div>
+        </div>
+        <span id="percent-text">Scanning Private Photos: 0%</span>
+    </div>
+
+    <div id="reveal-screen">
+        <div class="reveal-content">
+            <h1>প্র্যাঙ্কড! 😂</h1>
+            <img src="https://cataas.com/cat/cute" alt="Cute Cat" class="cat-img">
+            <h2 style="color: #333; margin-top: 20px;">ভয় পেয়েছো তো? তোমার কিছুই হ্যাক হয়নি!</h2>
+            <button class="btn" onclick="location.reload()">আবার খেলো</button>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal-log');
+        const progressBar = document.getElementById('progress-bar');
+        const percentText = document.getElementById('percent-text');
+        const hackerScreen = document.getElementById('hacker-screen');
+        const revealScreen = document.getElementById('reveal-screen');
+
+        const logs = [
+            "> Initializing virus scan...",
+            "> Bypassing system firewall...",
+            "> Accessing C:/Users/Documents/Private...",
+            "> Downloading private photos...",
+            "> Compiling system core files...",
+            "> Sending data to remote server...",
+            "> Deleting System32 folders...",
+            "> Virus successfully installed!",
+            "> Encryption started..."
+        ];
+
+        let i = 0;
+        let progress = 0;
+
+        // লগ মেসেজ দেখানোর ফাংশন
+        function showLogs() {
+            if (i < logs.length) {
+                const p = document.createElement('p');
+                p.textContent = logs[i];
+                terminal.appendChild(p);
+                terminal.scrollTop = terminal.scrollHeight;
+                i++;
+            }
+        }
+        setInterval(showLogs, 1000);
+
+        // প্রগ্রেস বার কন্ট্রোল
+        const interval = setInterval(() => {
+            progress += 1;
+            progressBar.style.width = progress + '%';
+            percentText.innerText = `Scanning & Uploading Private Data: ${progress}%`;
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(revealPrank, 500);
+            }
+        }, 120); // পুরো কাজ হতে প্রায় ১২ সেকেন্ড লাগবে
+
+        function revealPrank() {
+            hackerScreen.style.display = 'none';
+            document.body.style.backgroundColor = '#ffe6e6'; // ব্যাকগ্রাউন্ড কালার চেঞ্জ
+            revealScreen.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
