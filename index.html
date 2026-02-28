@@ -11,17 +11,31 @@
             background-color: black;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            transition: background-color 0.5s ease;
+            color: #00ff00;
         }
 
-        /* হ্যাকিং স্ক্রিন স্টাইল */
+        /* ম্যাট্রিক্স ক্যানভাস (পেছনের হ্যাকিং কোড) */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        /* হ্যাকিং কন্টেনার */
         #hacker-screen {
+            position: relative;
+            z-index: 1;
             text-align: center;
             width: 80%;
+            background: rgba(0, 0, 0, 0.85); /* পেছনে হালকা কালো ছায়া */
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #ff0000;
         }
 
         .warning-text {
@@ -39,22 +53,11 @@
             100% { opacity: 1; }
         }
 
-        #terminal-log {
-            color: #00ff00;
-            font-size: 1rem;
-            height: 150px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 5px;
-        }
-
         .progress-box {
             width: 100%;
             border: 2px solid #ff0000;
             padding: 3px;
+            margin-top: 20px;
         }
 
         #progress-bar {
@@ -66,36 +69,32 @@
 
         #percent-text {
             color: white;
-            margin-top: 10px;
+            margin-top: 15px;
             display: block;
             font-size: 1.2rem;
         }
 
-        /* প্র্যাঙ্ক রিভিল স্ক্রিন (লুকানো থাকবে শুরুতে) */
+        /* রিভিল স্ক্রিন */
         #reveal-screen {
             display: none;
+            position: relative;
+            z-index: 2;
             text-align: center;
         }
 
-        .reveal-content h1 {
-            color: #ff4081;
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
         .cat-img {
-            width: 350px;
+            width: 320px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 5px solid white;
         }
 
         .btn {
-            margin-top: 30px;
-            padding: 15px 40px;
+            margin-top: 25px;
+            padding: 12px 35px;
             background: #4CAF50;
             color: white;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
         }
@@ -103,75 +102,81 @@
 </head>
 <body>
 
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="hacker-screen">
         <div class="warning-text">SYSTEM HACKED!</div>
-        <div id="terminal-log"></div>
+        <p style="color: #00ff00;">>>> ACCESSING YOUR SYSTEM FILES...</p>
+        <p style="color: #00ff00;">>>> UPLOADING DATA TO ENCRYPTED SERVER...</p>
+        
         <div class="progress-box">
             <div id="progress-bar"></div>
         </div>
-        <span id="percent-text">Scanning Private Photos: 0%</span>
+        <span id="percent-text">Uploading Private Photos: 0%</span>
     </div>
 
     <div id="reveal-screen">
-        <div class="reveal-content">
-            <h1>প্র্যাঙ্কড! 😂</h1>
-            <img src="https://cataas.com/cat/cute" alt="Cute Cat" class="cat-img">
-            <h2 style="color: #333; margin-top: 20px;">ভয় পেয়েছো তো? তোমার কিছুই হ্যাক হয়নি!</h2>
-            <button class="btn" onclick="location.reload()">আবার খেলো</button>
-        </div>
+        <h1 style="color: #ff4081; font-size: 3rem; margin-bottom: 15px;">প্র্যাঙ্কড! 😂</h1>
+        <img src="https://cataas.com/cat/cute" alt="Cute Cat" class="cat-img">
+        <h2 style="color: white; margin-top: 20px;">তোমার কিছুই হ্যাক হয়নি, মজা করলাম!</h2>
+        <button class="btn" onclick="location.reload()">আবার খেলো</button>
     </div>
 
     <script>
-        const terminal = document.getElementById('terminal-log');
+        // --- ম্যাট্রিক্স ইফেক্ট স্ক্রিপ্ট ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#0F0";
+            ctx.font = fontSize + "px arial";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 35);
+
+        // --- প্রগ্রেস বার স্ক্রিপ্ট ---
         const progressBar = document.getElementById('progress-bar');
         const percentText = document.getElementById('percent-text');
         const hackerScreen = document.getElementById('hacker-screen');
         const revealScreen = document.getElementById('reveal-screen');
+        const matrixCanvas = document.getElementById('matrix-canvas');
 
-        const logs = [
-            "> Initializing virus scan...",
-            "> Bypassing system firewall...",
-            "> Accessing C:/Users/Documents/Private...",
-            "> Downloading private photos...",
-            "> Compiling system core files...",
-            "> Sending data to remote server...",
-            "> Deleting System32 folders...",
-            "> Virus successfully installed!",
-            "> Encryption started..."
-        ];
-
-        let i = 0;
         let progress = 0;
-
-        // লগ মেসেজ দেখানোর ফাংশন
-        function showLogs() {
-            if (i < logs.length) {
-                const p = document.createElement('p');
-                p.textContent = logs[i];
-                terminal.appendChild(p);
-                terminal.scrollTop = terminal.scrollHeight;
-                i++;
-            }
-        }
-        setInterval(showLogs, 1000);
-
-        // প্রগ্রেস বার কন্ট্রোল
         const interval = setInterval(() => {
             progress += 1;
             progressBar.style.width = progress + '%';
-            percentText.innerText = `Scanning & Uploading Private Data: ${progress}%`;
+            percentText.innerText = `Uploading Private Data: ${progress}%`;
 
             if (progress >= 100) {
                 clearInterval(interval);
-                setTimeout(revealPrank, 500);
+                setTimeout(() => {
+                    hackerScreen.style.display = 'none';
+                    matrixCanvas.style.display = 'none';
+                    document.body.style.backgroundColor = '#222';
+                    revealScreen.style.display = 'block';
+                }, 500);
             }
-        }, 120); // পুরো কাজ হতে প্রায় ১২ সেকেন্ড লাগবে
-
-        function revealPrank() {
-            hackerScreen.style.display = 'none';
-            document.body.style.backgroundColor = '#ffe6e6'; // ব্যাকগ্রাউন্ড কালার চেঞ্জ
-            revealScreen.style.display = 'block';
-        }
+        }, 100); 
     </script>
 
 </body>
